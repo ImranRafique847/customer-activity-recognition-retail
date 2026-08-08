@@ -1,0 +1,18 @@
+{
+    // Open every file as fully editable — no preview/read-only mode
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.enablePreviewFromQuickOpen": false,
+
+    // Always open files on single click
+    "workbench.tree.openMode": "singleClick",
+
+    // Disable read-only for all files
+    "files.readonlyInclude": {},
+    "files.readonlyExclude": {
+        "**/*": true
+    },
+
+    // Auto save so you never lose changes
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000
+}

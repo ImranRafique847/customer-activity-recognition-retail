@@ -1,0 +1,27 @@
+# Secrets — never commit
+.env
+
+# Model weights
+models/*.pt
+models/*.onnx
+
+# Data (large, synced from S3)
+data/
+
+# YOLO training runs
+runs/
+
+# Outputs
+outputs/annotated_videos/
+outputs/reports/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
