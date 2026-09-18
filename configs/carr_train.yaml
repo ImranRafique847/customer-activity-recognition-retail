@@ -1,0 +1,61 @@
+# CARR Dataset Training Configuration
+# Optimized for 45-90° tilted retail surveillance footage
+
+# ── Model ────────────────────────────────────────────────────────────────────
+model: yolo11s.pt          # Start with small — upgrade to yolo11m for final run
+imgsz: 640                 # Higher than 416 to catch compressed figures
+
+# ── Dataset ──────────────────────────────────────────────────────────────────
+data: dataset.yaml
+
+# ── Training ─────────────────────────────────────────────────────────────────
+epochs: 200                # More epochs needed for 6-class complex dataset
+patience: 50               # Stop early if no improvement for 50 epochs
+batch: 16                  # Safe for 4GB GPU at 640px
+workers: 4                 # Data loading workers
+
+# ── Optimizer ────────────────────────────────────────────────────────────────
+optimizer: AdamW           # Better than SGD for complex multi-class tasks
+lr0: 0.001                 # Initial learning rate
+lrf: 0.01                  # Final LR = lr0 * lrf
+momentum: 0.937
+weight_decay: 0.0005
+warmup_epochs: 5           # Warmup prevents early divergence
+warmup_momentum: 0.8
+warmup_bias_lr: 0.1
+
+# ── Loss Weights ─────────────────────────────────────────────────────────────
+box: 7.5                   # Bounding box loss weight
+cls: 0.5                   # Classification loss weight
+dfl: 1.5                   # Distribution focal loss
+
+# ── Augmentation — Critical for tilted retail footage ────────────────────────
+hsv_h: 0.015               # Hue shift (lighting variation between stores)
+hsv_s: 0.7                 # Saturation (different camera qualities)
+hsv_v: 0.4                 # Value/brightness (store lighting changes)
+degrees: 10.0              # Small rotation (camera not perfectly aligned)
+translate: 0.1             # Position shift
+scale: 0.5                 # Scale variation (customers at different distances)
+shear: 2.0                 # Shear (perspective distortion from tilt)
+perspective: 0.0005        # Perspective transform (simulates angle variation)
+flipud: 0.3                # Vertical flip (valid for overhead view)
+fliplr: 0.5                # Horizontal flip
+mosaic: 1.0                # Mosaic augmentation (combine 4 images)
+mixup: 0.15                # Mixup augmentation
+copy_paste: 0.1            # Copy-paste (helps with rare classes)
+close_mosaic: 20           # Disable mosaic last 20 epochs for stability
+
+# ── Class Weights — Fix imbalance ────────────────────────────────────────────
+# YOLO handles this internally but we set cls_pw for minority classes
+cls_pw: 1.0                # Increase if Viewing/Picking still underperforming
+
+# ── Hardware ─────────────────────────────────────────────────────────────────
+device: 0                  # GPU 0 (your Quadro T1000)
+amp: true                  # Mixed precision — halves GPU memory usage
+cache: false               # Set true if you have >16GB RAM to cache images
+
+# ── Logging ──────────────────────────────────────────────────────────────────
+project: runs/carr
+name: yolo11s_baseline
+save_period: 25            # Save checkpoint every 25 epochs
+plots: true                # Save training plots

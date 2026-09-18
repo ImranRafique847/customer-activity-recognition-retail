@@ -1,0 +1,18 @@
+# CARR Dataset Configuration for YOLO11
+
+path: data/retail_cv          # Dataset root
+train: train/images           # Train images
+val: val/images               # Val images
+test: test/images             # Test images
+
+# Number of classes
+nc: 6
+
+# Class names — exact order matters (matches label IDs)
+names:
+  0: No_Interest
+  1: Picking_And_Returning
+  2: Picking_and_Putting
+  3: Touching
+  4: Turning_to_Shelf
+  5: Viewing

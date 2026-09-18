@@ -1,9 +1,9 @@
 # Secrets — never commit
 .env
 
-# Model weights
+# Model weights and outputs (large, gitignored per Req 9.6)
 models/*.pt
-models/*.onnx
+models/*.pth
 
 # Data (large, synced from S3)
 data/

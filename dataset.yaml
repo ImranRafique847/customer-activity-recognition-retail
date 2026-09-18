@@ -1,0 +1,20 @@
+# Retail CV Action Recognition Dataset
+# 6 customer behaviour classes captured from CCTV cameras in retail stores
+# Data is stored on S3 and downloaded locally before training
+
+path: data/retail_cv          # root dir (relative to this yaml)
+train: train/images
+val:   val/images
+test:  test/images            # optional
+
+# Number of classes
+nc: 6
+
+# Class names — order MUST match the integer class IDs in the .txt label files
+names:
+  0: No Interest
+  1: Picking And Returning
+  2: Picking and Putting
+  3: Touching
+  4: Turning to Shelf
+  5: Viewing
