@@ -326,27 +326,24 @@ python -m pytest tests/ -v
 
 ## AWS Deployment
 
-### Package and Deploy to SageMaker Batch Transform
-```bash
-# Validate IAM permissions
-python scripts/iam_validator.py
+> **Note:** SageMaker deployment is planned as future work. The deployment scripts are fully implemented and tested but not yet executed in production. The current project focuses on the research benchmark.
 
-# Package model
-python scripts/package_model.py \
-    --model-path runs/carr/baseline_5k/weights/best.pt \
-    --run-name carr_v1
+The following scripts are ready for deployment when needed:
 
-# Run batch transform
-python scripts/run_batch_transform.py \
-    --input-s3-uri s3://your-bucket/batch-input/ \
-    --output-s3-uri s3://your-bucket/batch-output/ \
-    --model-name carr-yolo11s
-```
+- `scripts/package_model.py` — packages `best.pt` into `model.tar.gz` for SageMaker
+- `scripts/run_batch_transform.py` — launches SageMaker batch transform job
+- `scripts/deploy_realtime.py` — deploys SageMaker real-time endpoint
+- `scripts/setup_cloudwatch.py` — sets up CloudWatch monitoring
+- `scripts/iam_validator.py` — validates IAM permissions before deployment
 
-### Setup Monitoring
-```bash
-python scripts/setup_cloudwatch.py
-```
+### Training Infrastructure Used
+
+| Service | Role |
+|---|---|
+| **Amazon S3** | Dataset storage (263K images), model artifacts, training results |
+| **Amazon EC2** (g4dn.xlarge) | Model training — Tesla T4 GPU, 16GB VRAM |
+| **Amazon IAM** | Access control for S3 and EC2 |
+| **SageMaker** | Planned — batch inference on store footage *(future work)* |
 
 ---
 
